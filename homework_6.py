@@ -7,6 +7,8 @@ documents = []
 musics = []
 videos = []
 archives = []
+
+
 def normalize(path):
     CYRILLIC_SYMBOLS = "абвгдеёжзийклмнопрстуфхцчшщъыьэюяєіїґ"
     TRANSLATION = (
@@ -93,12 +95,14 @@ def sort_files(directory):
     print('Музика: ', musics)
     print('Відео: ', videos)
     print('Зображення: ', images)
+def main():
+    sort_files(directory)
+
 
 
 if __name__ == '__main__':
     import sys
     if len(sys.argv) != 2:
-        print("Напишіть:sort.py <папка>")
         sys.exit(1)
     directory = sys.argv[1]
     sort_files(directory)
