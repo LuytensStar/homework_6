@@ -100,13 +100,12 @@ def sort_files(directory):
     print(arhive_directory)
     for files in os.walk(arhive_directory):
         for file in files[2]:
-            print(file)
+            #print(file)
             file_without_ext = os.path.splitext(file)[0]
-            print(file_without_ext)
-            pate = str(arhive_directory) + '\\' + file
-            print(pate)
-            patne = str(arhive_directory) + "\\" +  file_without_ext
-            print(patne)
+            pate = os.path.join(arhive_directory, file)
+            #print(pate)
+            patne = os.path.join(arhive_directory, file_without_ext)
+            #print(patne)
 
             try:
                 with zipfile.ZipFile(pate) as zip_file :
