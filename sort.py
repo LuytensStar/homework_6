@@ -9,31 +9,6 @@ videos = []
 archives = []
 
 
-def normalize(path):
-    CYRILLIC_SYMBOLS = "абвгдеёжзийклмнопрстуфхцчшщъыьэюяєіїґ"
-    TRANSLATION = (
-    "a", "b", "v", "g", "d", "e", "e", "j", "z", "i", "j", "k", "l", "m", "n", "o", "p", "r", "s", "t", "u",
-    "f", "h", "ts", "ch", "sh", "sch", "", "y", "", "e", "yu", "ya", "je", "i", "ji", "g")
-
-    TRANS = {}
-    for c, l in zip(CYRILLIC_SYMBOLS, TRANSLATION):
-        TRANS[ord(c)] = l
-        TRANS[ord(c.upper())] = l.upper()
-    p = Path(directory)
-    for k in p.iterdir():
-        if k.is_dir() == False:
-            filename = k.name
-            m = re.sub('[@#!+~`№$:^&?*()]', '_', filename)
-            my_dest = m
-            my_source = directory + '/' + filename
-            my_dest = directory + '/' + my_dest
-            os.rename(my_source, my_dest)
-            print(filename)
-            j = m.translate(TRANS)
-            my_dest = j
-            my_source = directory + '/' + m
-            my_dest = directory + '/' + my_dest
-            os.rename(my_source,my_dest)
 
 def sort_files(directory):
     os.chdir(directory)
@@ -72,11 +47,12 @@ def sort_files(directory):
                 archives.append(filename)
                 destination = 'archives'
                 archive_path = os.path.join(root, filename)
-                archive_folder = os.path.join(root, filename)
+                archive_folder = os.path.join(root, os.path.splitext(filename)[0])
                 shutil.unpack_archive(archive_path, archive_folder)
             else:
                 destination = 'unknown'
                 unknown_extensions.add(file_extension)
+            print(destination)
 
             destination_directory = os.path.join(root, destination)
             os.makedirs(destination_directory, exist_ok=True)
@@ -95,6 +71,34 @@ def sort_files(directory):
     print('Музика: ', musics)
     print('Відео: ', videos)
     print('Зображення: ', images)
+
+def normalize(directory):
+    CYRILLIC_SYMBOLS = "абвгдеёжзийклмнопрстуфхцчшщъыьэюяєіїґ"
+    TRANSLATION = (
+    "a", "b", "v", "g", "d", "e", "e", "j", "z", "i", "j", "k", "l", "m", "n", "o", "p", "r", "s", "t", "u",
+    "f", "h", "ts", "ch", "sh", "sch", "", "y", "", "e", "yu", "ya", "je", "i", "ji", "g")
+
+    TRANS = {}
+    for c, l in zip(CYRILLIC_SYMBOLS, TRANSLATION):
+        TRANS[ord(c)] = l
+        TRANS[ord(c.upper())] = l.upper()
+    p = Path(directory)
+    for k in p.iterdir():
+        if k.is_dir() == False:
+            filename = k.name
+            m = re.sub('[@#!+~`№$:^&?*()]', '_', filename)
+            my_dest = m
+            my_source = directory + '/' + filename
+            my_dest = directory + '/' + my_dest
+            os.rename(my_source, my_dest)
+            print(filename)
+            j = m.translate(TRANS)
+            my_dest = j
+            my_source = directory + '/' + m
+            my_dest = directory + '/' + my_dest
+            os.rename(my_source,my_dest)
+
+
 def main():
     sort_files(directory)
 
